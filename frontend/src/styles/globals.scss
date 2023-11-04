@@ -1,3 +1,8 @@
+/*
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Ubuntu', sans-serif;
+*/
+
 *{
     margin: 0;
     padding: 0;
@@ -19,10 +24,32 @@ button{
     cursor: pointer;
 }
 
+body{
+    background-color: var(--dark-900);
+}
+
 a{
+    color: inherit;
     text-decoration: none;
 }
 
-body, input, textarea, button{
-    font: 400 1rem;
+input, textarea{
+    text-transform: uppercase;
+}
+
+h1, h2, h3{
+    color: var(--dark-900);
+    font-family: 'Roboto', sans-serif
+}
+
+@media (max-width: 720px){
+    html{
+        font-size: 87.5%;
+    }
+}
+
+@media (max-width: 720px){
+    html{
+        font-size: 93.75%;
+    }
 }

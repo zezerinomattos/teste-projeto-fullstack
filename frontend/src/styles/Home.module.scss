@@ -1,1 +1,16 @@
+main.container{
+    width: 100%;
+    height: 100vh;
+}
 
+main.container div.header{
+    width: 80%;
+    height: 150px;
+    margin: auto;
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: aqua;
+}
