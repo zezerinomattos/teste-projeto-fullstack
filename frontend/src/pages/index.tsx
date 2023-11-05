@@ -35,6 +35,8 @@ export default function Home() {
   const [selectedFilter, setSelectedFilter] = useState('decre');
   const [userId, setUserId] = useState('');
   const [name, setName] = useState('');
+  const [initialDate, setInitialDate] = useState('');
+  const [finalDate, setFinalDate] = useState('')
   const [userLyList, setUserList] = useState<ListUser[]>();
 
   const [userLyDetailModal, setUserDetailModal] = useState<DetailUser>();
@@ -86,14 +88,34 @@ export default function Home() {
       });
     }
 
+    //FILTRANDO POR PERIODO
+    if(!userId && !name && selectedFilter === 'periodo'){
+      const initial = initialDate.toString();
+      const final = finalDate.toString();
+
+      await api.get('/users/date', {
+        params: {
+          initialDate: initial,
+          finalDate: final,
+        }
+      })
+      .then(response => {
+        setUserList(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+        toast.error(error.response.data.erro);
+      });
+    }
+
     //FILTRANDO TODOS
-    if(!name && !userId){
+    if(!name && !userId && !selectedFilter){
       await api.get('/users').then((response) => {
         setUserList(response.data);
       });
     }
   }
-  
+
   useEffect(() => {
     async function getList(){
       await api.get('/users').then((response) => {
@@ -151,6 +173,20 @@ Modal.setAppElement('#__next');
             <Button onClick={handleFilter}><FcSearch size={22}/></Button>
           </div>
         </div>
+
+        {
+          selectedFilter === 'periodo' && (
+            <div className={styles.header}>
+              <div className={styles.filter}>
+                <Input type='date' onChange={(e) => setInitialDate(e.target.value)}  style={{width: '200px'}}/>
+              </div>
+
+              <div className={styles.filter}>
+                  <Input type='date' onChange={(e) => setFinalDate(e.target.value)} style={{width: '200px'}}/>
+              </div>
+            </div>
+          )
+        }
         
         <div className={styles.containerList}>
           <ol className={styles.list}>
