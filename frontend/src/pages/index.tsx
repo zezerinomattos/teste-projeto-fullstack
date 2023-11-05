@@ -19,15 +19,17 @@ export default function Home() {
 
   
   useEffect(() => {
-    //Escondendo o loading quando ele montar completamente o componente
+    
+    
     setCarregando(false);
   }, [])
 
   if (carregando) {
-    return 
+    return(
       <div className={styles.loadingContainer}>
-        <FaSpinner color='#FFF' size={46} className={styles.loading}/>
-      </div>;
+        <FaSpinner color='#000' size={46} className={styles.loading}/>
+      </div>
+    );
 }
 
 //Modal.setAppElement('#__next');
@@ -66,39 +68,11 @@ export default function Home() {
             <Button><FcSearch size={22}/></Button>
           </div>
         </div>
-        <h1>teste</h1>
+        
+        <div className={styles.containerList}></div>
 
       </main>
     </>
   )
 }
 
-{/* <div className={styles.filterContainer}>
-  <div className={styles.filter}>
-      <Input placeholder='CÓDIGO' value={listId} onChange={(e) => setListId(e.target.value)} style={{width: '300px'}}/>
-  </div>
-
-  <div className={styles.filter}>
-      <Input placeholder={selectedFilter} value={listName} onChange={(e) => setListName(e.target.value.toUpperCase())} style={{width: '250px'}}/>
-  </div>
-
-  <div className={styles.filter}>
-      <select 
-          name="product" 
-          id="product"
-          value={selectedFilter} 
-          onChange={(e) => setSelectedFilter(e.target.value)}
-          className={styles.selectInput}
-      >
-          <option value="PRODUTO">PRODUTO</option>
-          <option value="SECAO">SEÇÃO</option>
-          <option value="CATEGORIA">CATEGORIA</option>
-          <option value="REPRESENTANTE">REPRESENTANTE</option>
-          <option value="FABRICA">FÁBRICA</option>
-      </select>
-  </div>
-
-  <div className={styles.filter}>
-      <button onClick={filterFactory} className={styles.buttonBuscar}>BUSCAR <FcSearch size={28} style={{marginLeft: '10px'}} /></button>
-  </div>
-</div> */}

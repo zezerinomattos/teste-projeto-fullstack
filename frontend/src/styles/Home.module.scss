@@ -3,6 +3,8 @@ main.container{
     height: 100vh;
 }
 
+// READER --------------------------
+
 main.container div.header{
     width: 80%;
     margin: auto;
@@ -29,4 +31,15 @@ div.filter select.selectInput{
     
     margin: 0 10px;
     margin-bottom: 1rem;
+}
+
+// LIST --------------------------
+
+main.container div.containerList{
+    width: 80%;
+    margin: auto;
+    padding: 1rem 0;
+
+    display: flex;
+    flex-direction: column;
 }
