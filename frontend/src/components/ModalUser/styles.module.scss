@@ -51,6 +51,12 @@ div.inputLabel{
     }
 }
 
+div.inputsBasicData button{
+    height: 40px;
+    margin: 10px;
+    padding: 10px;
+}
+
 @media (max-width: 520px){
     form.form{
         width: 100%;

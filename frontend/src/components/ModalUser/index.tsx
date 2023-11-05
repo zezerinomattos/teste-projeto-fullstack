@@ -1,11 +1,15 @@
-import React from 'react';
+import React, { useState} from 'react';
 import Modal from 'react-modal';
+import { FaSpinner } from 'react-icons/fa';
+import { toast } from 'react-toastify';
 
 //MY IMPORTS
 import styles from './styles.module.scss';
 import { DetailUser } from '../../pages/index';
 import { Input } from '../UI/Input';
 import { Button } from '../UI/Button';
+
+import api from '../../services/api';
 
 interface ModalProps{
     isOpen: boolean;
@@ -26,8 +30,32 @@ export function ModalUser({ isOpen, onRequestClose, user }: ModalProps){
         },
     };
 
+    const [loading, setLoaging] = useState(false);
+
+    //FUNCAO PARA DELETAR USER
+    async function handleDelet(id: string){
+        await api.delete('/user', {
+            params: {
+                user_id: id
+            }
+        })
+        .then(response => {
+            onRequestClose();
+            toast.success('Usuário Deletado com sucesso!');
+        })
+        .catch(error => {
+            console.log(error);
+            toast.error(error.response.data.erro);
+        })
+    }
+
+    //FUNCAO PARA EDITAR USUER
+    async function handleEdit(){
+
+    }
+
     return(
-        <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
+        <Modal isOpen={isOpen} onRequestClose={() => onRequestClose} style={customStyles}>
             <div className={styles.container}>
                 <h1>DETALHES DO USUÁRIO</h1>
 
@@ -74,7 +102,8 @@ export function ModalUser({ isOpen, onRequestClose, user }: ModalProps){
                     </div>
 
                     <div className={styles.inputsBasicData}>
-                        
+                        <Button loading={loading} onClick={handleEdit}>EDITAR</Button>
+                        <Button style={{backgroundColor: '#FF3F4B'}} loading={loading} onClick={() => handleDelet(user.id)}>EXCLUIR</Button>
                     </div>
                 </form>
                 
