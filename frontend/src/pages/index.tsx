@@ -40,7 +40,7 @@ export default function Home() {
   const [userLyDetailModal, setUserDetailModal] = useState<DetailUser>();
   const [modalVisible, setModalVisible] = useState(false);
 
-
+  //FUNCAO DETALHE USER
   async function userDetail(id: string){
     await api.get('/user/detail', {
       params:{
@@ -60,6 +60,38 @@ export default function Home() {
   // FUNCAO FECHAR MODAL
   function handleCloseModal(){
     setModalVisible(false);
+  }
+
+  // FUNCAO FILTROS
+  async function handleFilter(){
+
+    if(userLyList){
+      const filterUser = userLyList.filter((user) => user.id.includes(userId));
+      setUserList(filterUser);
+    }
+
+    //FILTRANDO POR NOME
+    if(!userId && name){
+      await api.get('/users/name', {
+        params: {
+          name: name,
+        },
+      })
+      .then(response => {
+        setUserList(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+        toast.error(error.response.data.erro);
+      });
+    }
+
+    //FILTRANDO TODOS
+    if(!name && !userId){
+      await api.get('/users').then((response) => {
+        setUserList(response.data);
+      });
+    }
   }
   
   useEffect(() => {
@@ -94,11 +126,11 @@ Modal.setAppElement('#__next');
       <main className={styles.container}>
         <div className={styles.header}>
           <div className={styles.filter}>
-              <Input placeholder='CÓDIGO DO USUÁRIO' style={{width: '300px'}}/>
+              <Input onChange={(e) => setUserId(e.target.value)} placeholder='CÓDIGO DO USUÁRIO' style={{width: '300px'}}/>
           </div>
 
           <div className={styles.filter}>
-              <Input placeholder='NOME DO USUÁRIO' style={{width: '350px'}}/>
+              <Input onChange={(e) => setName(e.target.value)} placeholder='NOME DO USUÁRIO' style={{width: '350px'}}/>
           </div>
 
           <div className={styles.filter}>
@@ -116,7 +148,7 @@ Modal.setAppElement('#__next');
           </div>
 
           <div className={styles.filter}>
-            <Button><FcSearch size={22}/></Button>
+            <Button onClick={handleFilter}><FcSearch size={22}/></Button>
           </div>
         </div>
         
