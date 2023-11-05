@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
+import Modal from 'react-modal';
+import { toast } from 'react-toastify';
 
 //MY IMPORTS
 import styles from '@/styles/Home.module.scss';
 import { Button } from '../components/UI/Button';
 import { Input, TextArea } from '../components/UI/Input';
+import { ModalUser } from '../components/ModalUser';
 
 import api from '../services/api';
 
@@ -33,7 +36,10 @@ export default function Home() {
   const [userId, setUserId] = useState('');
   const [name, setName] = useState('');
   const [userLyList, setUserList] = useState<ListUser[]>();
-  const [userLyDetail, setUserDetail] = useState<DetailUser[]>();
+
+  const [userLyDetailModal, setUserDetailModal] = useState<DetailUser>();
+  const [modalVisible, setModalVisible] = useState(false);
+
 
   async function userDetail(id: string){
     await api.get('/user/detail', {
@@ -42,8 +48,18 @@ export default function Home() {
       }
     })
     .then(response =>{
-      setUserDetail(response.data);
+      setUserDetailModal(response.data);
+      setModalVisible(true);
     })
+    .catch(error => {
+      console.log(error);
+      toast.error(error.response.data.erro);
+    });
+  }
+
+  // FUNCAO FECHAR MODAL
+  function handleCloseModal(){
+    setModalVisible(false);
   }
   
   useEffect(() => {
@@ -67,7 +83,7 @@ export default function Home() {
     );
 }
 
-//Modal.setAppElement('#__next');
+Modal.setAppElement('#__next');
 
   return (
     <>
@@ -122,6 +138,15 @@ export default function Home() {
         </div>
 
       </main>
+      {
+        modalVisible && userLyDetailModal && (
+          <ModalUser
+              isOpen={modalVisible}
+              onRequestClose={handleCloseModal}
+              user={userLyDetailModal}
+          />
+        )
+      }
     </>
   )
 }
