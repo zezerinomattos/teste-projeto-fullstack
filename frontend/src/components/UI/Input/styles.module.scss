@@ -1,0 +1,26 @@
+input.input{
+    height: 40px;
+    border: 1px solid var(--green-900);
+    border-radius: 0.5rem;
+    background-color: rgba(237, 237, 237, 0.647);
+    color: var(--darck-900);
+    padding: 1rem;
+    margin: 0 10px;
+    margin-bottom: 1rem;
+}
+
+input.input::placeholder{
+    color: #383636a5;
+}
+
+textarea.textArea{
+    width: 95%;
+    height: 5rem;
+    border: 1px solid var(--green-700);
+    border-radius: 0.5rem;
+    background-color: rgba(237, 237, 237, 0.647);
+    color: var(--white);
+    padding: 1rem;
+    margin: 0 10px;
+    margin-bottom: 1rem;
+}
