@@ -8,6 +8,22 @@ import styles from '@/styles/Home.module.scss';
 import { Button } from '../components/UI/Button';
 import { Input, TextArea } from '../components/UI/Input';
 
+import api from '../services/api';
+
+type ListUser = {
+  id: string;
+  name: string;
+  email: string;
+}
+
+export type DetailUser = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  created_at: Date;
+  updated_at: Date;
+}
 
 export default function Home() {
   const [carregando, setCarregando] = useState(true);
@@ -15,12 +31,31 @@ export default function Home() {
 
   const [selectedFilter, setSelectedFilter] = useState('decre');
   const [userId, setUserId] = useState('');
-  const [name, setName] = useState('')
+  const [name, setName] = useState('');
+  const [userLyList, setUserList] = useState<ListUser[]>();
+  const [userLyDetail, setUserDetail] = useState<DetailUser[]>();
 
+  async function userDetail(id: string){
+    await api.get('/user/detail', {
+      params:{
+        user_id: id
+      }
+    })
+    .then(response =>{
+      setUserDetail(response.data);
+    })
+  }
   
   useEffect(() => {
-    
-    
+    async function getList(){
+      await api.get('/users').then((response) => {
+        //console.log(response.data);
+        setUserList(response.data);
+      });
+    }
+
+    getList();
+
     setCarregando(false);
   }, [])
 
@@ -69,7 +104,22 @@ export default function Home() {
           </div>
         </div>
         
-        <div className={styles.containerList}></div>
+        <div className={styles.containerList}>
+          <ol className={styles.list}>
+            <li>
+              <span className={styles.headList}>CODIGO</span>
+              <span className={styles.headList}>NOME</span>
+              <span className={styles.headList}>EMAIL</span>
+            </li>
+            {userLyList?.map(user => (
+              <li key={user.id} onClick={() => userDetail(user.id)}>
+                <span>{user.id}</span>
+                <span>{user.name}</span>
+                <span>{user.email}</span>
+              </li>
+            ))}
+          </ol>
+        </div>
 
       </main>
     </>
