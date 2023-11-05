@@ -4,6 +4,7 @@ import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import Modal from 'react-modal';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/router';
 
 //MY IMPORTS
 import styles from '@/styles/Home.module.scss';
@@ -29,6 +30,7 @@ export type DetailUser = {
 }
 
 export default function Home() {
+  const router = useRouter();
   const [carregando, setCarregando] = useState(true);
   const [loading, setLoaging] = useState(false);
 
@@ -138,6 +140,11 @@ export default function Home() {
     }
   }
 
+  //FUNCAO NAVEGATE PAGE NEW USER
+  function handleNewUser(){
+    router.push('/user/newuser');
+  }
+
   useEffect(() => {
     async function getList(){
       await api.get('/users').then((response) => {
@@ -157,7 +164,7 @@ export default function Home() {
         <FaSpinner color='#000' size={46} className={styles.loading}/>
       </div>
     );
-}
+  }
 
 Modal.setAppElement('#__next');
 
@@ -193,6 +200,10 @@ Modal.setAppElement('#__next');
 
           <div className={styles.filter}>
             <Button onClick={handleFilter}><FcSearch size={22}/></Button>
+          </div>
+
+          <div className={styles.filter}>
+            <Button style={{marginLeft: '10px'}} onClick={handleNewUser}>NOVO USUÁRIO</Button>
           </div>
         </div>
 
