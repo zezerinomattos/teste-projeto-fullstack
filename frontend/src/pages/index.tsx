@@ -88,6 +88,28 @@ export default function Home() {
       });
     }
 
+    //FILTRANDO DO MAIOR PARA O MENOR
+    if(!userId && !name && selectedFilter === 'decre'){
+      await api.get('/users/desc').then((response) => {
+        setUserList(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+        toast.error(error.response.data.erro);
+      });
+    }
+
+    //FILTRANDO DO MENOR PARA O MAIOR
+    if(!userId && !name && selectedFilter === 'cresc'){
+      await api.get('/users/asce').then((response) => {
+        setUserList(response.data);
+      })
+      .catch(error => {
+        console.log(error);
+        toast.error(error.response.data.erro);
+      });
+    }
+
     //FILTRANDO POR PERIODO
     if(!userId && !name && selectedFilter === 'periodo'){
       const initial = initialDate.toString();
