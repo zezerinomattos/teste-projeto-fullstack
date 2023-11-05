@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, FormEvent } from 'react';
 import Modal from 'react-modal';
 import { FaSpinner } from 'react-icons/fa';
 import { toast } from 'react-toastify';
@@ -31,6 +31,12 @@ export function ModalUser({ isOpen, onRequestClose, user }: ModalProps){
     };
 
     const [loading, setLoaging] = useState(false);
+    const [userId, setUserId] = useState(user.id);
+    const [name, setName] = useState(user.name);
+    const [email, setEmail] = useState(user.email);
+    const [phone, setPhone] = useState(user.phone);
+    const [createdAt, setCreatedAt] = useState(user.created_at);
+    const [updatedAt, setUpdatedAt] = useState(user.updated_at);
 
     //FUNCAO PARA DELETAR USER
     async function handleDelet(id: string){
@@ -40,7 +46,6 @@ export function ModalUser({ isOpen, onRequestClose, user }: ModalProps){
             }
         })
         .then(response => {
-            onRequestClose();
             toast.success('Usuário Deletado com sucesso!');
         })
         .catch(error => {
@@ -51,11 +56,25 @@ export function ModalUser({ isOpen, onRequestClose, user }: ModalProps){
 
     //FUNCAO PARA EDITAR USUER
     async function handleEdit(){
-
+        
+        await api.put('/user', {
+            user_id: userId,
+            name: name,
+            email: email,
+            phone: phone
+        })
+        .then((response) => {
+            toast.success('Usuário editado!')
+            onRequestClose();
+        })
+        .catch(error => {
+            console.log(error);
+            toast.error(error.response.data.erro);
+        });
     }
 
     return(
-        <Modal isOpen={isOpen} onRequestClose={() => onRequestClose} style={customStyles}>
+        <Modal isOpen={isOpen} onRequestClose={onRequestClose} style={customStyles}>
             <div className={styles.container}>
                 <h1>DETALHES DO USUÁRIO</h1>
 
@@ -64,40 +83,35 @@ export function ModalUser({ isOpen, onRequestClose, user }: ModalProps){
                         <div className={styles.inputsBasicData}>
                             <div className={styles.inputLabel}>
                                 <label htmlFor="">CÓDIGO</label>
-                                <Input value={user.id} disabled style={{width: '300px', textTransform: 'none'}} />
+                                <Input value={userId} disabled style={{width: '300px', textTransform: 'none'}} />
                             </div>
                         </div>
 
                         <div className={styles.inputLabel}>
-                            <label htmlFor="">CÓDIGO</label>
-                            <Input value={user.id} disabled style={{width: '300px', textTransform: 'none'}} />
-                        </div>
-
-                        <div className={styles.inputLabel}>
                             <label htmlFor="">NOME</label>
-                            <Input value={user.name} disabled style={{width: '350px', textTransform: 'none'}} />
+                            <Input value={name} onChange={(e) => setName(e.target.value)} style={{width: '350px', textTransform: 'none'}} />
                         </div>
 
                         <div className={styles.inputLabel}>
                             <label htmlFor="">E-MAIL</label>
-                            <Input value={user.email} disabled style={{width: '300px', textTransform: 'none'}} />
+                            <Input value={email} onChange={(e) => setEmail(e.target.value)} style={{width: '300px', textTransform: 'none'}} />
+                        </div>
+
+                        <div className={styles.inputLabel}>
+                            <label htmlFor="">TELEFONE</label>
+                            <Input value={phone} onChange={(e) => setPhone(e.target.value)} style={{width: '300px', textTransform: 'none'}} />
                         </div>
                     </div>
 
                     <div className={styles.inputsBasicData}>
                         <div className={styles.inputLabel}>
-                            <label htmlFor="">TELEFONE</label>
-                            <Input value={user.phone} disabled style={{width: '300px', textTransform: 'none'}} />
-                        </div>
-
-                        <div className={styles.inputLabel}>
                             <label htmlFor="">DATA DE CRIAÇÃO</label>
-                            <Input value={new Date(user.created_at).toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
+                            <Input value={new Date(createdAt).toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
                         </div>
 
                         <div className={styles.inputLabel}>
                             <label htmlFor="">ÚLTIMA ATUALIZAÇÃO</label>
-                            <Input value={new Date(user.updated_at).toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
+                            <Input value={new Date(updatedAt).toLocaleDateString("pt-BR", {day: '2-digit', month: '2-digit', year: 'numeric'})} disabled style={{width: '120px'}}/>
                         </div>
                     </div>
 
