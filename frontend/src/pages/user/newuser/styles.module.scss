@@ -1,3 +1,22 @@
+div.loadingContainer{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+div.loadingContainer .loading{
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    bottom: 50%;
+    top: 50%;
+
+    animation: animate 2s infinite;
+}
+
 div.container{
     width: 90vw;
     height: 90vh;
@@ -66,4 +85,12 @@ div.inputsBasicData button{
             margin: 10px 0;
         }
     }
+}
+
+span.spanMenssage{
+    color: var(--red-900);
+    margin-top: 2rem;
+    font-size: max(18px, 1.2vw);
+    font-family: 'Ubuntu', sans-serif;
+    text-shadow: 2px 2px 4px #2b2929;
 }

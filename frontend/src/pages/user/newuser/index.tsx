@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
-import { toast } from 'react-toastify';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 
 //MY IMPORTS
 import styles from './styles.module.scss';
@@ -13,19 +12,20 @@ import { Input, TextArea } from '../../../components/UI/Input';
 import api from '../../../services/api';
 
 export default function NewUser(){
-    const router = useRouter();
     const [carregando, setCarregando] = useState(true);
     const [loading, setLoaging] = useState(false);
+    const [message, setMessage] = useState('');
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
 
     //FUNCAO PARA EDITAR USUER
-    async function handleNewUser(){
+    async function handleNewUser(event: FormEvent){
+        event.preventDefault();
 
         if(!name || !email || !phone){
-            toast.warning('Informe os Campos Obrigatórios!');
+            setMessage('Informe os Campos Obrigatórios!');
             return
         }
         
@@ -35,16 +35,12 @@ export default function NewUser(){
             phone: phone
         })
         .then((response) => {
-            toast.success('Usuário criado!');
+            setMessage('Usuário criado!');
         })
         .catch(error => {
             console.log(error);
-            toast.error(error.response.data.erro);
+            setMessage(error.response.data.erro);
         });
-    }
-
-    function handleLista(){
-        router.push('/');
     }
 
     useEffect(() => {
@@ -86,12 +82,13 @@ export default function NewUser(){
 
 
                     <div className={styles.inputsBasicData}>
-                        <Button loading={loading} onClick={handleNewUser}>NOVO USUÁRIO</Button>
+                        <Button loading={loading} onClick={handleNewUser}>CRIAR USUÁRIO</Button>
 
-                        <Button loading={loading} onClick={handleLista}>LISTA DE USUÁRIO</Button>
+                        <Button type='button'><Link href="/">LISTA DE USUÁRIO</Link></Button>
                     </div>
                 </form>
                 
+                {message && <span className={styles.spanMenssage}>{message}</span>}
             </div>
         </>
     )

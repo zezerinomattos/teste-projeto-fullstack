@@ -3,7 +3,6 @@ import Head from 'next/head';
 import { FaSpinner } from 'react-icons/fa';
 import { FcSearch } from "react-icons/fc";
 import Modal from 'react-modal';
-import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 
 //MY IMPORTS
@@ -33,6 +32,7 @@ export default function Home() {
   const router = useRouter();
   const [carregando, setCarregando] = useState(true);
   const [loading, setLoaging] = useState(false);
+  const [message, setMessage] = useState('');
 
   const [selectedFilter, setSelectedFilter] = useState('decre');
   const [userId, setUserId] = useState('');
@@ -57,7 +57,7 @@ export default function Home() {
     })
     .catch(error => {
       console.log(error);
-      toast.error(error.response.data.erro);
+      setMessage(error.response.data.erro);
     });
   }
 
@@ -86,7 +86,7 @@ export default function Home() {
       })
       .catch(error => {
         console.log(error);
-        toast.error(error.response.data.erro);
+        setMessage(error.response.data.erro);
       });
     }
 
@@ -97,7 +97,7 @@ export default function Home() {
       })
       .catch(error => {
         console.log(error);
-        toast.error(error.response.data.erro);
+        setMessage(error.response.data.erro);
       });
     }
 
@@ -108,7 +108,7 @@ export default function Home() {
       })
       .catch(error => {
         console.log(error);
-        toast.error(error.response.data.erro);
+        setMessage(error.response.data.erro);
       });
     }
 
@@ -128,7 +128,7 @@ export default function Home() {
       })
       .catch(error => {
         console.log(error);
-        toast.error(error.response.data.erro);
+        setMessage(error.response.data.erro);
       });
     }
 
@@ -221,6 +221,8 @@ Modal.setAppElement('#__next');
           )
         }
         
+        {message && <span className={styles.spanMenssage}>{message}</span>}
+
         <div className={styles.containerList}>
           <ol className={styles.list}>
             <li>
