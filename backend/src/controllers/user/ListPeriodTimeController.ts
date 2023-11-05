@@ -4,7 +4,8 @@ import { ListPeriodTimeService } from '../../services/user/ListPeriodTimeService
 
 class ListPeriodTimeController{
     async handle(req: Request, res: Response){
-        const { initialDate, finalDate } = req.body;
+        const initialDate = req.query.initialDate as string;
+        const finalDate = req.query.finalDate as string;
 
         const periodTimeService = new ListPeriodTimeService();
 
