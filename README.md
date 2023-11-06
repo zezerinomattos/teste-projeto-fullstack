@@ -30,6 +30,8 @@ Este é um projeto Full-Stack para cadastro de usuário desenvolvido por mim des
 
 4 - Execute as migrações do banco de dados usando Prisma:<br/>
 - npx prisma migrate dev <br/>
+- Siga as instruções para da documentação do Prisma para construir seu banco de dados: <br/>
+[Pagina Prisma](https://www.prisma.io/)
 
 5 - Inicie o servidor do back-end: <br/>
 - npm start <br/>
